@@ -4,16 +4,18 @@ abstract class Torneo(
     val videojuego: Videojuego,
     val modalidad: ModalidadTorneo,
     val equipos: List[Equipo],
-    val estado: Estado
+    val estado: EstadoTorneo,
+    val partidas: List[Partida],
+    val nombreTipo: String
 ) {
-    def descripción(): String
+    def descripcion(): String = s"$nombreTipo\nID: $idTorneo\nNombre: $nombreTorneo\nJuego: ${videojuego.titulo}\nModalidad: ${modalidad.descripcion()}\nEstado: ${estado.descripcion()}"
 
-    def actualizarEstadoTorneo(estadoNuevo: Estado): Torneo
+    def actualizarEstadoTorneo(estadoNuevo: EstadoTorneo): Torneo
 
     protected def detalleFinal(partidas: List[Partida]): String
 
     def resumenFinal(partidas: List[Partida]): String = 
         estado match
-            case Finalizado => s"RESUMEN FINAL\n${descripción()}\nEquipos participantes: ${Utilidades.longitud(equipos)}\n${detalleFinal(partidas)}"
+            case TorneoFinalizado => s"RESUMEN FINAL\n${descripcion()}\nEquipos participantes: ${Utilidades.longitud(equipos)}\n${detalleFinal(partidas)}"
             case _ => s"El torneo '$nombreTorneo' aún no ha finalizado (${estado.descripcion()})"
 }

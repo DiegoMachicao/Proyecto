@@ -1,6 +1,6 @@
 object ReglasPuntaje {
   // (puntos equipo1, puntos equipo2) según el resultado de la partida
-  val clasica: Estado => (Int, Int) = {
+  val clasica: EstadoPartida => (Int, Int) = {
     case FinalizadoGanoEquipo1 => (3, 0)
     case FinalizadoGanoEquipo2 => (0, 3)
     case FinalizadoEmpate      => (1, 1)
@@ -33,7 +33,7 @@ object Utilidades {
 
   // ---------- Orden superior: la regla de puntaje es un parámetro ----------
   def calcularTabla(equipos: List[Equipo], partidas: List[PartidaPuntos])
-                   (regla: Estado => (Int, Int)): List[ResultadoEquipo] =
+                   (regla: EstadoPartida => (Int, Int)): List[ResultadoEquipo] =
     partidas.foldLeft(equipos.map(e => ResultadoEquipo(e, 0))) { (tabla, p) =>
       val (pts1, pts2) = regla(p.estado)
       tabla.map(r =>
